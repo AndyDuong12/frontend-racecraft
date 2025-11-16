@@ -5,7 +5,7 @@ export default function mainContent() {
     <div className="flex mt-10">
       <div className="grid grid-cols-4 gap-6">
         {/* Left Chart */}
-        <div className="col-span-1 bg-neutral-600 text-neutral-50 rounded-2xl p-5">
+        <div className="col-span-1 row-span-2 bg-neutral-600 rounded-2xl p-5">
           <h2 className="text-lg text-center mb-4 font-semibold">
             Wins on Races per Driver
           </h2>
@@ -16,7 +16,7 @@ export default function mainContent() {
         {/* Right 2 small stats */}
         <div className="col-span-3 flex space-x-6">
           {/* Card 1 */}
-          <div className="flex-1 bg-neutral-600 text-neutral-50 p-6 rounded-2xl">
+          <div className="flex-1 bg-neutral-600  p-6 rounded-2xl">
             <h3 className="text-sm text-center font-medium mb-4">
               HAMILTON Lewis
             </h3>
@@ -25,7 +25,7 @@ export default function mainContent() {
           </div>
 
           {/* Card 2 */}
-          <div className="flex-1 bg-neutral-600 text-neutral-50 p-6 rounded-2xl">
+          <div className="flex-1 bg-neutral-600 p-6 rounded-2xl">
             <h3 className="text-sm text-center font-medium mb-4">
               VETTEL Sebastian
             </h3>
@@ -35,12 +35,12 @@ export default function mainContent() {
         </div>
 
         {/* Bottom Chart */}
-        <div className="col-span-4 bg-neutral-600 rounded-2xl p-6">
+        <div className="col-start-2 col-span-3 bg-neutral-600 rounded-2xl p-6">
           <div className="flex justify-around mb-4">
-            <h3 className="text-base text-neutral-50">
+            <h3 className="text-base">
               <span className="font-semibold">Track: </span>Monza
             </h3>
-            <h3 className="text-base text-neutral-50">
+            <h3 className="text-base">
               <span className="font-semibold">Metric: </span>Lap Time Comparison
             </h3>
           </div>

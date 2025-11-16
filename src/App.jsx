@@ -19,7 +19,7 @@ export default function App() {
   fetchData();*/
 
   return (
-    <div className="min-h-screen bg-neutral-800 p-6">
+    <div className="min-h-screen text-neutral-50 bg-neutral-800 p-6">
       <NavBar />
       <MainContent />
     </div>
