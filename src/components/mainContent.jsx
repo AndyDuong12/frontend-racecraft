@@ -1,47 +1,63 @@
+// src/components/mainContent.jsx
 import f1car from "../assets/formula1-car-icon.png";
 
-export default function mainContent() {
+export default function MainContent({ activeView }) {
+  const isDrivers = activeView === "drivers";
+
+  // Text that changes between views, layout stays identical
+  const leftPanelTitle = isDrivers
+    ? "Wins on Races per Driver"
+    : "Wins on Races per Constructor";
+
+  const leftCardTitle = isDrivers ? "HAMILTON Lewis" : "Mercedes";
+  const rightCardTitle = isDrivers ? "VETTEL Sebastian" : "Red Bull";
+
+  const bottomMetricLabel = isDrivers
+    ? "Lap Time Comparison"
+    : "Race Wins per Season";
+
   return (
     <div className="flex mt-10">
       <div className="grid grid-cols-4 gap-6">
-        {/* Left Chart */}
-        <div className="col-span-1 row-span-2 bg-neutral-600 rounded-2xl p-5">
-          <h2 className="text-lg text-center mb-4 font-semibold">
-            Wins on Races per Driver
+        {/* Left Chart (same size for both views) */}
+        <div className="col-span-1 row-span-2 bg-neutral-600 rounded-2xl p-5 min-h-[260px]">
+          <h2 className="text-lg text-center mb-4 font-semibold leading-tight h-12 flex items-center justify-center">
+            {leftPanelTitle}
           </h2>
           {/* Chart here */}
           <p>Chart Placeholder</p>
         </div>
 
-        {/* Right 2 small stats */}
+        {/* Right 2 small stats (same layout, different labels) */}
         <div className="col-span-3 flex space-x-6">
           {/* Card 1 */}
-          <div className="flex-1 bg-neutral-600  p-6 rounded-2xl">
-            <h3 className="text-sm text-center font-medium mb-4">
-              HAMILTON Lewis
+          <div className="flex-1 bg-neutral-600 p-6 rounded-2xl min-h-[150px]">
+            <h3 className="text-sm text-center font-medium mb-4 leading-tight h-6 flex items-center justify-center">
+              {leftCardTitle}
             </h3>
             {/* Stats here */}
             <p>Stats Placeholder</p>
           </div>
 
           {/* Card 2 */}
-          <div className="flex-1 bg-neutral-600 p-6 rounded-2xl">
-            <h3 className="text-sm text-center font-medium mb-4">
-              VETTEL Sebastian
+          <div className="flex-1 bg-neutral-600 p-6 rounded-2xl min-h-[150px]">
+            <h3 className="text-sm text-center font-medium mb-4 leading-tight h-6 flex items-center justify-center">
+              {rightCardTitle}
             </h3>
             {/* Stats here */}
             <p>Stats Placeholder</p>
           </div>
         </div>
 
-        {/* Bottom Chart */}
-        <div className="col-start-2 col-span-3 bg-neutral-600 rounded-2xl p-6">
+        {/* Bottom Chart (same size; only metric label changes) */}
+        <div className="col-start-2 col-span-3 bg-neutral-600 rounded-2xl p-6 min-h-[200px]">
           <div className="flex justify-around mb-4">
             <h3 className="text-base">
               <span className="font-semibold">Track: </span>Monza
             </h3>
             <h3 className="text-base">
-              <span className="font-semibold">Metric: </span>Lap Time Comparison
+              <span className="font-semibold">Metric: </span>
+              {bottomMetricLabel}
             </h3>
           </div>
 
@@ -49,6 +65,8 @@ export default function mainContent() {
           <p>Chart Placeholder</p>
         </div>
       </div>
+
+      {/* Car illustration on the right */}
       <div className="w-40 flex justify-center">
         <img src={f1car} alt="f1 car" className="h-[300px]" />
       </div>
