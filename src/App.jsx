@@ -1,18 +1,12 @@
-<<<<<<< Updated upstream
 import { useState } from "react";
-=======
->>>>>>> Stashed changes
 import NavBar from "./components/navbar.jsx";
 import MainContent from "./components/mainContent.jsx";
 
 import "./styles.css";
 
 export default function App() {
-<<<<<<< Updated upstream
   const [activeView, setActiveView] = useState("drivers");
 
-=======
->>>>>>> Stashed changes
   /* const fetchData = async () => {
     try {
       const res = await fetch(
@@ -29,13 +23,8 @@ export default function App() {
 
   return (
     <div className="min-h-screen text-neutral-50 bg-neutral-800 p-6">
-<<<<<<< Updated upstream
       <NavBar activeView={activeView} onChangeView={setActiveView} />
       <MainContent activeView={activeView} />
-=======
-      <NavBar />
-      <MainContent />
->>>>>>> Stashed changes
     </div>
   );
 }
