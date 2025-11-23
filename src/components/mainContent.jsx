@@ -2,7 +2,7 @@ import f1car from "../assets/formula1-car-icon.png";
 
 export default function mainContent() {
   return (
-    <div className="flex mt-10">
+    <div className="flex justify-center mt-10">
       <div className="grid grid-cols-4 gap-6">
         {/* Left Chart */}
         <div className="col-span-1 row-span-2 bg-neutral-600 rounded-2xl p-5">
