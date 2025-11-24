@@ -1,14 +1,12 @@
 // src/components/mainContent.jsx
 import f1car from "../assets/formula1-car-icon.png";
 
+import DriverWins from "../api/drivers/driverWins.jsx";
+
 export default function MainContent({ activeView }) {
   const isDrivers = activeView === "drivers";
 
   // Text that changes between views, layout stays identical
-  const leftPanelTitle = isDrivers
-    ? "Wins on Races per Driver"
-    : "Wins on Races per Constructor";
-
   const leftCardTitle = isDrivers ? "HAMILTON Lewis" : "Mercedes";
   const rightCardTitle = isDrivers ? "VETTEL Sebastian" : "Red Bull";
 
@@ -18,18 +16,26 @@ export default function MainContent({ activeView }) {
 
   return (
     <div className="flex justify-center mt-10">
-      <div className="grid grid-cols-4 gap-6">
+      <div className="grid grid-cols-4 gap-6 w-full max-w-7xl px-4">
         {/* Left Chart (same size for both views) */}
-        <div className="col-span-1 row-span-2 bg-neutral-600 rounded-2xl p-5 min-h-[260px]">
-          <h2 className="text-lg text-center mb-4 font-semibold leading-tight h-12 flex items-center justify-center">
-            {leftPanelTitle}
-          </h2>
-          {/* Chart here */}
-          <p>Chart Placeholder</p>
-        </div>
+        {isDrivers ? (
+          <div className="col-span-2 row-span-2 bg-neutral-600 rounded-2xl p-5 min-h-[260px]">
+            <h2 className="text-lg text-center mb-4 font-semibold leading-tight h-12 flex items-center justify-center">
+              Wins on Races per Driver
+            </h2>
+            <DriverWins />
+          </div>
+        ) : (
+          <div className="col-span-1 row-span-2 bg-neutral-600 rounded-2xl p-5 min-h-[260px]">
+            <h2 className="text-lg text-center mb-4 font-semibold leading-tight h-12 flex items-center justify-center">
+              Wins on Races per Constructors
+            </h2>
+            <p>Chart Placeholder</p>
+          </div>
+        )}
 
         {/* Right 2 small stats (same layout, different labels) */}
-        <div className="col-span-3 flex space-x-6">
+        <div className="col-span-2 flex space-x-6">
           {/* Card 1 */}
           <div className="flex-1 bg-neutral-600 p-6 rounded-2xl min-h-[150px]">
             <h3 className="text-sm text-center font-medium mb-4 leading-tight h-6 flex items-center justify-center">
@@ -50,7 +56,7 @@ export default function MainContent({ activeView }) {
         </div>
 
         {/* Bottom Chart (same size; only metric label changes) */}
-        <div className="col-start-2 col-span-3 bg-neutral-600 rounded-2xl p-6 min-h-[200px]">
+        <div className="col-start-3 col-span-2 bg-neutral-600 rounded-2xl p-6 min-h-[200px]">
           <div className="flex justify-around mb-4">
             <h3 className="text-base">
               <span className="font-semibold">Track: </span>Monza
