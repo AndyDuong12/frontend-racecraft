@@ -1,7 +1,6 @@
-// src/components/mainContent.jsx
-import f1car from "../assets/formula1-car-icon.png";
+import f1car from "../assets/formula1-car-icon.png";    // Car image on the right
 
-import DriverWins from "../api/drivers/driverWins.jsx";
+import DriverWinsChart from "../charts/driverWinsChart.jsx";
 
 export default function MainContent({ activeView }) {
   const isDrivers = activeView === "drivers";
@@ -23,10 +22,10 @@ export default function MainContent({ activeView }) {
             <h2 className="text-lg text-center mb-4 font-semibold leading-tight h-12 flex items-center justify-center">
               Wins on Races per Driver
             </h2>
-            <DriverWins />
+            <DriverWinsChart />
           </div>
         ) : (
-          <div className="col-span-1 row-span-2 bg-neutral-600 rounded-2xl p-5 min-h-[260px]">
+          <div className="col-span-2 row-span-2 bg-neutral-600 rounded-2xl p-5 min-h-[260px]">
             <h2 className="text-lg text-center mb-4 font-semibold leading-tight h-12 flex items-center justify-center">
               Wins on Races per Constructors
             </h2>
