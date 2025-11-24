@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -16,7 +17,8 @@ ChartJS.register(
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  ChartDataLabels
 );
 
 export default function DriverWins() {
@@ -136,21 +138,29 @@ export default function DriverWins() {
     };
   }, []);
 
+  // Sort wins by descending by number of wins
+  const sortedWins = [...wins].sort((a, b) => b.wins - a.wins);
+
+  // console.log for debug
   useEffect(() => {
-    console.log(wins);
-  }, [wins]);
+    console.log(sortedWins);
+  }, [sortedWins]);
 
   // Loading
   if (loading)
-    return <div className="text-neutral-50 text-center">Loading...</div>;
+    return (
+      <div className="text-neutral-50 text-center text-3xl font-bold">
+        Loading...
+      </div>
+    );
 
   // chart.js data formatting
   const data = {
-    labels: wins.map((d) => d.name),
+    labels: sortedWins.map((d) => d.name),
     datasets: [
       {
         label: "Wins",
-        data: wins.map((d) => d.wins),
+        data: sortedWins.map((d) => d.wins),
         backgroundColor: "rgba(255, 178, 102, 0.7)",
         borderColor: "rgba(255, 178, 102, 0.7)",
         borderWidth: 1,
@@ -162,10 +172,22 @@ export default function DriverWins() {
     indexAxis: "y",
     responsive: true,
     maintainAspectRatio: false,
+    layout: {
+      padding: {
+        left: 20,
+        right: 20,
+      },
+    },
     plugins: {
       legend: {
         display: true,
         labels: { color: "white" },
+      },
+      datalabels: {
+        anchor: "end",
+        align: "end",
+        color: "white",
+        font: { weight: "bold" },
       },
     },
     scales: {
@@ -196,7 +218,7 @@ export default function DriverWins() {
   };
 
   return (
-    <div className="w-full mx-auto h-64">
+    <div className="w-full mx-auto h-5/6">
       <Bar data={data} options={options} />
     </div>
   );
