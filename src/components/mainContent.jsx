@@ -16,7 +16,7 @@ export default function MainContent({ activeView }) {
 
   return (
     <div className="flex justify-center mt-10">
-      <div className="grid grid-cols-4 gap-6 w-full max-w-7xl px-4">
+      <div className="grid grid-cols-4 gap-6 w-full px-20">
         {/* Left Chart (same size for both views) */}
         {isDrivers ? (
           <div className="col-span-2 row-span-2 bg-neutral-600 rounded-2xl p-5 min-h-[260px]">
