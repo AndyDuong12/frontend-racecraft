@@ -1,5 +1,3 @@
-import DriverWinsAPI from "../api/drivers/driverWinsAPI.jsx";
-
 import { Bar } from "react-chartjs-2";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import {
@@ -22,9 +20,7 @@ ChartJS.register(
   ChartDataLabels
 );
 
-export default function DriverWinsChart() {
-  const { sortedWins, loading } = DriverWinsAPI();
-
+export default function DriverWinsChart({ sortedWins, loading }) {
   // Loading
   if (loading)
     return <div className="text-center text-3xl font-bold">Loading...</div>;

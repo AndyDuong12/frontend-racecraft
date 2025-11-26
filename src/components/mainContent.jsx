@@ -1,14 +1,15 @@
-import f1car from "../assets/formula1-car-icon.png";    // Car image on the right
+import f1car from "../assets/formula1-car-icon.png"; // Car image on the right
 
+import DriverWinsAPI from "../api/drivers/driverWinsAPI.jsx";
 import DriverWinsChart from "../charts/driverWinsChart.jsx";
+import DriverStats from "../charts/driverStats.jsx";
 
 export default function MainContent({ activeView }) {
+  const { sortedWins, loading } = DriverWinsAPI();
+
   const isDrivers = activeView === "drivers";
 
   // Text that changes between views, layout stays identical
-  const leftCardTitle = isDrivers ? "HAMILTON Lewis" : "Mercedes";
-  const rightCardTitle = isDrivers ? "VETTEL Sebastian" : "Red Bull";
-
   const bottomMetricLabel = isDrivers
     ? "Lap Time Comparison"
     : "Race Wins per Season";
@@ -22,7 +23,7 @@ export default function MainContent({ activeView }) {
             <h2 className="text-lg text-center mb-4 font-semibold leading-tight h-12 flex items-center justify-center">
               Wins on Races per Driver
             </h2>
-            <DriverWinsChart />
+            <DriverWinsChart sortedWins={sortedWins} loading={loading} />
           </div>
         ) : (
           <div className="col-span-2 row-span-2 bg-neutral-600 rounded-2xl p-5 min-h-[260px]">
@@ -37,20 +38,24 @@ export default function MainContent({ activeView }) {
         <div className="col-span-2 flex space-x-6">
           {/* Card 1 */}
           <div className="flex-1 bg-neutral-600 p-6 rounded-2xl min-h-[150px]">
-            <h3 className="text-sm text-center font-medium mb-4 leading-tight h-6 flex items-center justify-center">
-              {leftCardTitle}
-            </h3>
-            {/* Stats here */}
-            <p>Stats Placeholder</p>
+            <div className="text-sm text-center font-medium leading-tight flex items-center justify-center">
+              {isDrivers ? (
+                <DriverStats sortedWins={sortedWins} loading={loading} />
+              ) : (
+                "Mercedes"
+              )}
+            </div>
           </div>
 
           {/* Card 2 */}
           <div className="flex-1 bg-neutral-600 p-6 rounded-2xl min-h-[150px]">
-            <h3 className="text-sm text-center font-medium mb-4 leading-tight h-6 flex items-center justify-center">
-              {rightCardTitle}
-            </h3>
-            {/* Stats here */}
-            <p>Stats Placeholder</p>
+            <div className="text-sm text-center font-medium leading-tight flex items-center justify-center">
+              {isDrivers ? (
+                <DriverStats sortedWins={sortedWins} loading={loading} />
+              ) : (
+                "Red Bull"
+              )}
+            </div>
           </div>
         </div>
 

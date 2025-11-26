@@ -13,16 +13,11 @@ export default function NavBar({ activeView, onChangeView }) {
         <div className="w-px h-20 bg-neutral-50" />
         {/* Titles */}
         <div className="flex flex-col">
-          <h1 className="text-4xl text-neutral-50 font-bold">
+          <h1 className="text-4xl font-bold">
             {activeView === "drivers"
               ? "Driver Comparison"
               : "Constructors Comparison"}
           </h1>
-          <p className="text-xl text-neutral-50">
-            {activeView === "drivers"
-              ? "Hamilton vs Vettel"
-              : "Mercedes vs Red Bull"}
-          </p>
         </div>
       </div>
 

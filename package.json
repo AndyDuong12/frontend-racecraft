@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@axe-core/react": "^4.11.0",
+    "@headlessui/react": "^2.2.9",
+    "@heroicons/react": "^2.2.0",
     "@tailwindcss/vite": "^4.1.17",
     "axe-core": "^4.11.0",
     "chart.js": "^4.5.1",
