@@ -10,11 +10,12 @@
 frontend-racecraft/
 ├── src/
 │   ├── api/
-│   │   ├── drivers/
-│   │   │   └── driverWinsAPI.jsx   [Fetch API and return drivers and wins]
-│   │   └── constructors/
+│   │   ├── constructors/
+│   │   └── drivers/
+│   │       └── driverWinsAPI.jsx   [Fetch API and return drivers and wins]
 │   ├── assets/
 │   ├── charts/
+|   |   ├── driverStats.jsx         [Create stats for drivers]
 │   │   └── driverWinsChart.jsx     [Create chart for Wins on Races per Driver]
 │   ├── components/
 │   │   ├── mainContent.jsx         [The main panels on the body of the page]
