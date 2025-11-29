@@ -1,15 +1,17 @@
 import f1car from "../assets/formula1-car-icon.png"; // Car image on the right
 
-import DriverWinsAPI from "../api/drivers/driverWinsAPI.jsx";
-import DriverWinsChart from "../charts/driverWinsChart.jsx";
-import DriverStats from "../charts/driverStats.jsx";
+import useDriverWinsAPI from "../api/drivers/driverWinsAPI.jsx"; // API call for 'Wins on Races per Driver'
+import useDriverStatsAPI from "../api/drivers/driverStatsAPI.jsx"; // API call for drivers stats
+import DriverWinsChart from "../charts/driverWinsChart.jsx"; // Chart for 'Wins on Races per Driver'
+import DriverStats from "../charts/driverStats.jsx"; // Driver stats
 
 export default function MainContent({ activeView }) {
-  const { sortedWins, loading } = DriverWinsAPI();
-
-  const isDrivers = activeView === "drivers";
+  // Fetch from API
+  const { sortedWins, loadingStatsAPI } = useDriverWinsAPI();
+  const { driverDetails, loadingDetails } = useDriverStatsAPI(sortedWins);
 
   // Text that changes between views, layout stays identical
+  const isDrivers = activeView === "drivers";
   const bottomMetricLabel = isDrivers
     ? "Lap Time Comparison"
     : "Race Wins per Season";
@@ -23,7 +25,10 @@ export default function MainContent({ activeView }) {
             <h2 className="text-lg text-center mb-4 font-semibold leading-tight h-12 flex items-center justify-center">
               Wins on Races per Driver
             </h2>
-            <DriverWinsChart sortedWins={sortedWins} loading={loading} />
+            <DriverWinsChart
+              sortedWins={sortedWins}
+              loadingStatsAPI={loadingStatsAPI}
+            />
           </div>
         ) : (
           <div className="col-span-2 row-span-2 bg-neutral-600 rounded-2xl p-5 min-h-[260px]">
@@ -40,7 +45,12 @@ export default function MainContent({ activeView }) {
           <div className="flex-1 bg-neutral-600 p-6 rounded-2xl min-h-[150px]">
             <div className="text-sm text-center font-medium leading-tight flex items-center justify-center">
               {isDrivers ? (
-                <DriverStats sortedWins={sortedWins} loading={loading} />
+                <DriverStats
+                  sortedWins={sortedWins}
+                  loadingStatsAPI={loadingStatsAPI}
+                  driverDetails={driverDetails}
+                  loadingDetails={loadingDetails}
+                />
               ) : (
                 "Mercedes"
               )}
@@ -51,7 +61,12 @@ export default function MainContent({ activeView }) {
           <div className="flex-1 bg-neutral-600 p-6 rounded-2xl min-h-[150px]">
             <div className="text-sm text-center font-medium leading-tight flex items-center justify-center">
               {isDrivers ? (
-                <DriverStats sortedWins={sortedWins} loading={loading} />
+                <DriverStats
+                  sortedWins={sortedWins}
+                  loadingStatsAPI={loadingStatsAPI}
+                  driverDetails={driverDetails}
+                  loadingDetails={loadingDetails}
+                />
               ) : (
                 "Red Bull"
               )}

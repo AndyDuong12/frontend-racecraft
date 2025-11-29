@@ -6,6 +6,7 @@ export default function useDriverStatsAPI(sortedWins) {
   const [driverDetails, setDriverDetails] = useState([]);
   const [loadingDetails, setLoadingDetails] = useState(true);
 
+  // Fetch from API using data from sortedWins
   useEffect(() => {
     if (!sortedWins || sortedWins.length === 0) return;
 
@@ -35,7 +36,7 @@ export default function useDriverStatsAPI(sortedWins) {
   useEffect(() => {
     if (!loadingDetails && driverDetails.length > 0) {
       console.log('Driver details fetched:', driverDetails);
-      // Or to see it more clearly:
+      // See the object in table form:
       console.table(driverDetails);
     }
   }, [loadingDetails]);

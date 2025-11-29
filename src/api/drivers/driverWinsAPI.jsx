@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
-export default function DriverWinsAPI() {
+export default function useDriverWinsAPI() {
   const BASEURL = "https://api.openf1.org/v1"; // API url
 
   const [wins, setWins] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loadingStatsAPI, setLoadingStatsAPI] = useState(true);
 
   // Function to set timeout (To delay requests to avoid many request limit exceeded)
   function sleep(ms) {
@@ -104,7 +104,7 @@ export default function DriverWinsAPI() {
         // Set state only if the component is mounted
         if (isMounted) {
           setWins(result);
-          setLoading(false);
+          setLoadingStatsAPI(false);
         }
       } catch (error) {
         console.error(error);
@@ -119,12 +119,18 @@ export default function DriverWinsAPI() {
   }, []);
 
   // Sort wins by descending by number of wins
-  const sortedWins = [...wins].sort((a, b) => b.wins - a.wins);
+  // useMemo() stops infinite fetching because sortedWins will maintain the same reference
+  // until 'wins' actually changes, preventing useEffect in driverStatsAPI.jsx from running repeatedly.
+  const sortedWins = useMemo(() => {
+    return [...wins].sort((a, b) => b.wins - a.wins);
+  }, [wins]);
 
   // console.log() for debugging
   useEffect(() => {
-    console.log(sortedWins);
+    if (sortedWins.length > 0) {
+      console.log("Sorted wins:", sortedWins);
+    }
   }, [sortedWins]);
 
-  return { sortedWins, loading };
+  return { sortedWins, loadingStatsAPI };
 }

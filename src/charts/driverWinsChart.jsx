@@ -20,10 +20,10 @@ ChartJS.register(
   ChartDataLabels
 );
 
-export default function DriverWinsChart({ sortedWins, loading }) {
-  // Loading
-  if (loading)
+export default function DriverWinsChart({ sortedWins, loadingStatsAPI }) {
+  if (loadingStatsAPI || !sortedWins || sortedWins.length === 0) {
     return <div className="text-center text-3xl font-bold">Loading...</div>;
+  }
 
   // chart.js data formatting
   const data = {
