@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 
@@ -7,8 +6,19 @@ export default function DriverStats({
   loadingStatsAPI,
   driverDetails,
   loadingDetails,
+  cardID,
+  selectedDrivers,
+  setSelectedDrivers,
 }) {
-  const [selectedDriver, setSelectedDriver] = useState(null);
+  const selectedDriver = selectedDrivers[cardID];
+
+  // Handle driver selection
+  const handleSelectDriver = (driver) => {
+    setSelectedDrivers((prev) => ({
+      ...prev,
+      [cardID]: driver,
+    }));
+  };
 
   // Loading check
   if (loadingStatsAPI || !sortedWins || sortedWins.length === 0) {
@@ -20,6 +30,23 @@ export default function DriverStats({
       </div>
     );
   }
+
+  // Filter out drivers already selected in other cards
+  const availableDrivers = sortedWins.filter((driver) => {
+    // Keep the current selection for this card
+    if (
+      selectedDriver &&
+      driver.driver_number == selectedDriver.driver_number
+    ) {
+      return true;
+    }
+
+    // Filter out drivers selected in other cards
+    return !Object.entries(selectedDrivers).some(
+      ([id, selected]) =>
+        id !== cardID && selected?.driver_number == driver.driver_number
+    );
+  });
 
   // Find the selected driver's details
   const selectedDriverDetails = selectedDriver
@@ -45,11 +72,11 @@ export default function DriverStats({
           className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-neutral-700  outline-1 -outline-offset-1 outline-white/10 transition data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
         >
           <div className="py-1">
-            {sortedWins.map((d) => (
+            {availableDrivers.map((d) => (
               <MenuItem key={d.driver_number}>
                 <button
                   className="w-full block px-4 py-2 text-sm text-gray-300 data-focus:bg-white/5  data-focus:text-white data-focus:outline-hidden"
-                  onClick={() => setSelectedDriver(d)}
+                  onClick={() => handleSelectDriver(d)}
                 >
                   {d.name}
                 </button>
@@ -89,6 +116,10 @@ export default function DriverStats({
                   {
                     label: "Name Acronym",
                     value: selectedDriverDetails.name_acronym,
+                  },
+                  {
+                    label: "Wins",
+                    value: selectedDriver.wins,
                   },
                   {
                     label: "Country Code",

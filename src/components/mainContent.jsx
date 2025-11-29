@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import f1car from "../assets/formula1-car-icon.png"; // Car image on the right
 
 import useDriverWinsAPI from "../api/drivers/driverWinsAPI.jsx"; // API call for 'Wins on Races per Driver'
@@ -9,6 +11,12 @@ export default function MainContent({ activeView }) {
   // Fetch from API
   const { sortedWins, loadingStatsAPI } = useDriverWinsAPI();
   const { driverDetails, loadingDetails } = useDriverStatsAPI(sortedWins);
+
+  // Track the selected drivers for the 2 stats cards
+  const [selectedDrivers, setSelectedDrivers] = useState({
+    card1: null,
+    card2: null
+  })
 
   // Text that changes between views, layout stays identical
   const isDrivers = activeView === "drivers";
@@ -50,6 +58,9 @@ export default function MainContent({ activeView }) {
                   loadingStatsAPI={loadingStatsAPI}
                   driverDetails={driverDetails}
                   loadingDetails={loadingDetails}
+                  cardID="card1"
+                  selectedDrivers={selectedDrivers}
+                  setSelectedDrivers={setSelectedDrivers}
                 />
               ) : (
                 "Mercedes"
@@ -66,6 +77,9 @@ export default function MainContent({ activeView }) {
                   loadingStatsAPI={loadingStatsAPI}
                   driverDetails={driverDetails}
                   loadingDetails={loadingDetails}
+                  cardID="card2"
+                  selectedDrivers={selectedDrivers}
+                  setSelectedDrivers={setSelectedDrivers}
                 />
               ) : (
                 "Red Bull"
