@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useMemo } from "react"; // #
 
 import f1car from "../assets/formula1-car-icon.png"; // Car image on the right
 
@@ -6,6 +7,8 @@ import useDriverWinsAPI from "../api/drivers/driverWinsAPI.jsx"; // API call for
 import useDriverStatsAPI from "../api/drivers/driverStatsAPI.jsx"; // API call for drivers stats
 import DriverWinsChart from "../charts/driverWinsChart.jsx"; // Chart for 'Wins on Races per Driver'
 import DriverStats from "../charts/driverStats.jsx"; // Driver stats
+import ConstructorWinsChart from "../charts/constructorWinsChart.jsx";
+import ConstructorStats from "../charts/constructorStats.jsx";
 
 export default function MainContent({ activeView }) {
   // Fetch from API
@@ -15,8 +18,56 @@ export default function MainContent({ activeView }) {
   // Track the selected drivers for the 2 stats cards
   const [selectedDrivers, setSelectedDrivers] = useState({
     card1: null,
-    card2: null
-  })
+    card2: null,
+  });
+
+  // Selected constructors for the two cards
+  const [selectedConstructors, setSelectedConstructors] = useState({
+    card1: null,
+    card2: null,
+  });
+
+  // Group driver wins by team to get constructor wins
+  const constructorWins = useMemo(() => {
+    // #
+    if (!sortedWins || sortedWins.length === 0 || !driverDetails) {
+      // #
+      return []; // #
+    } // #
+
+    const teamMap = new Map(); // #
+
+    sortedWins.forEach((driverWin) => {
+      // #
+      const details = driverDetails.find(
+        // #
+        (d) => String(d?.driver_number) === String(driverWin.driver_number) // # updated
+      ); // #
+
+      if (!details || !details.team_name) return; // #
+
+      const teamName = details.team_name; // #
+      const teamColour = details.team_colour; // #
+
+      const existing = teamMap.get(teamName); // #
+      if (existing) {
+        // #
+        existing.wins += driverWin.wins; // #
+      } else {
+        // #
+        teamMap.set(teamName, {
+          // #
+          teamName, // #
+          teamColour, // #
+          wins: driverWin.wins, // #
+        }); // #
+      } // #
+    }); // #
+
+    return Array.from(teamMap.values()).sort((a, b) => b.wins - a.wins); // #
+  }, [sortedWins, driverDetails]); // #
+
+  const constructorsLoading = loadingStatsAPI || loadingDetails; // # updated
 
   // Text that changes between views, layout stays identical
   const isDrivers = activeView === "drivers";
@@ -43,51 +94,83 @@ export default function MainContent({ activeView }) {
             <h2 className="text-lg text-center mb-4 font-semibold leading-tight h-12 flex items-center justify-center">
               Wins on Races per Constructors
             </h2>
-            <p>Chart Placeholder</p>
+            {/* removed placeholder text here */} {/* # */}
+            <ConstructorWinsChart
+              constructorWins={constructorWins}
+              loading={constructorsLoading}
+            />{" "}
+            {/* # */}
           </div>
         )}
-
         {/* Right 2 small stats (same layout, different labels) */}
-        <div className="col-span-2 flex space-x-6">
-          {/* Card 1 */}
-          <div className="flex-1 bg-neutral-600 p-6 rounded-2xl min-h-[150px]">
-            <div className="text-sm text-center font-medium leading-tight flex items-center justify-center">
-              {isDrivers ? (
-                <DriverStats
-                  sortedWins={sortedWins}
-                  loadingStatsAPI={loadingStatsAPI}
-                  driverDetails={driverDetails}
-                  loadingDetails={loadingDetails}
-                  cardID="card1"
-                  selectedDrivers={selectedDrivers}
-                  setSelectedDrivers={setSelectedDrivers}
-                />
-              ) : (
-                "Mercedes"
-              )}
+        {isDrivers && (
+          <div className="col-span-2 flex space-x-6">
+            {/* Card 1 */}
+            <div className="flex-1 bg-neutral-600 p-6 rounded-2xl min-h-[150px]">
+              <div className="text-sm text-center font-medium leading-tight flex items-center justify-center">
+                {isDrivers ? (
+                  <DriverStats
+                    sortedWins={sortedWins}
+                    loadingStatsAPI={loadingStatsAPI}
+                    driverDetails={driverDetails}
+                    loadingDetails={loadingDetails}
+                    cardID="card1"
+                    selectedDrivers={selectedDrivers}
+                    setSelectedDrivers={setSelectedDrivers}
+                  />
+                ) : null}
+              </div>
+            </div>
+
+            {/* Card 2 */}
+            <div className="flex-1 bg-neutral-600 p-6 rounded-2xl min-h-[150px]">
+              <div className="text-sm text-center font-medium leading-tight flex items-center justify-center">
+                {isDrivers ? (
+                  <DriverStats
+                    sortedWins={sortedWins}
+                    loadingStatsAPI={loadingStatsAPI}
+                    driverDetails={driverDetails}
+                    loadingDetails={loadingDetails}
+                    cardID="card2"
+                    selectedDrivers={selectedDrivers}
+                    setSelectedDrivers={setSelectedDrivers}
+                  />
+                ) : null}
+              </div>
             </div>
           </div>
-
-          {/* Card 2 */}
-          <div className="flex-1 bg-neutral-600 p-6 rounded-2xl min-h-[150px]">
-            <div className="text-sm text-center font-medium leading-tight flex items-center justify-center">
-              {isDrivers ? (
-                <DriverStats
-                  sortedWins={sortedWins}
-                  loadingStatsAPI={loadingStatsAPI}
-                  driverDetails={driverDetails}
-                  loadingDetails={loadingDetails}
-                  cardID="card2"
-                  selectedDrivers={selectedDrivers}
-                  setSelectedDrivers={setSelectedDrivers}
-                />
-              ) : (
-                "Red Bull"
-              )}
+        )}
+        {/* Extra constructor stats cards when in constructors view */}
+        {isDrivers ? null : ( // #
+          <div className="col-span-2 flex space-x-6">
+            {/* # */}
+            <div className="flex-1 bg-neutral-600 p-6 rounded-2xl min-h-[150px]">
+              {/* # */}
+              <ConstructorStats
+                constructorWins={constructorWins}
+                loading={constructorsLoading}
+                cardID="card1"
+                selectedConstructors={selectedConstructors}
+                setSelectedConstructors={setSelectedConstructors}
+              />
+              {/* # */}
             </div>
-          </div>
-        </div>
-
+            {/* # */}
+            <div className="flex-1 bg-neutral-600 p-6 rounded-2xl min-h-[150px]">
+              {/* # */}
+              <ConstructorStats
+                constructorWins={constructorWins}
+                loading={constructorsLoading}
+                cardID="card2"
+                selectedConstructors={selectedConstructors}
+                setSelectedConstructors={setSelectedConstructors}
+              />
+              {/* # */}
+            </div>
+            {/* # */}
+          </div> // #
+        )}{" "}
+        {/* # */}
         {/* Bottom Chart (same size; only metric label changes) */}
         <div className="col-start-3 col-span-2 bg-neutral-600 rounded-2xl p-6 min-h-[200px]">
           <div className="flex justify-around mb-4">
@@ -101,7 +184,6 @@ export default function MainContent({ activeView }) {
           </div>
 
           {/* Chart here */}
-          <p>Chart Placeholder</p>
         </div>
       </div>
 
