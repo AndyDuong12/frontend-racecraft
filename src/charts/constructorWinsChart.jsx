@@ -1,3 +1,4 @@
+// src/charts/constructorWinsChart.jsx
 import { Bar } from "react-chartjs-2";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import {
@@ -20,9 +21,19 @@ ChartJS.register(
   ChartDataLabels
 );
 
+// Team → color mapping
+const TEAM_COLORS = {
+  "Red Bull Racing": "#3671C6",
+  McLaren: "#F58020",
+  Mercedes: "#6CD3BF",
+  Ferrari: "#F91536",
+};
+
+const DEFAULT_BAR_COLOR = "#D8924C";
+
 export default function ConstructorWinsChart({ constructorWins, loading }) {
   if (loading) {
-    return <p className="text-sm text-center">Loading constructor wins…</p>;
+    return <p className="text-sm text-center">Loading constructor wins...</p>;
   }
 
   if (!constructorWins || constructorWins.length === 0) {
@@ -32,13 +43,20 @@ export default function ConstructorWinsChart({ constructorWins, loading }) {
   const labels = constructorWins.map((team) => team.teamName);
   const wins = constructorWins.map((team) => team.wins);
 
+  // Use team color if available, otherwise fall back to default
+  const backgroundColors = constructorWins.map(
+    (team) => TEAM_COLORS[team.teamName] || DEFAULT_BAR_COLOR
+  );
+
   const data = {
     labels,
     datasets: [
       {
         label: "Wins",
         data: wins,
-        backgroundColor: "#D8924C",
+        backgroundColor: backgroundColors,
+        borderColor: backgroundColors,
+        borderWidth: 1,
         borderRadius: 6,
         barThickness: 18,
       },
