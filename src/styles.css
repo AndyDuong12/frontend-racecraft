@@ -1,1 +1,25 @@
+@import url("https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap");
 @import "tailwindcss";
+
+/* F1-style select dropdown */
+.f1-select option {
+  background-color: #020617; /* very dark background */
+  color: #e5e7eb; /* neutral-200 text */
+}
+
+.f1-select option:hover,
+.f1-select option:checked,
+.f1-select option:focus {
+  background-color: #e10600; /* F1 red */
+  color: #ffffff;
+}
+.font-play {
+  font-family: "Play", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+}
+h1,
+h2,
+h3 {
+  font-family: "Play", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+}

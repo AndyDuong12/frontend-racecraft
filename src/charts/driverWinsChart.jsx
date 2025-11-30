@@ -32,8 +32,26 @@ export default function DriverWinsChart({ sortedWins, loadingStatsAPI }) {
       {
         label: "Wins",
         data: sortedWins.map((d) => d.wins),
-        backgroundColor: "rgba(255, 178, 102, 0.7)",
-        borderColor: "rgba(255, 178, 102, 0.7)",
+        backgroundColor: [
+          "#3671C6", // Max Verstappen
+          "#F58020", // Lando Norris
+          "#F58020", // Oscar Piastri
+          "#6CD3BF", // George Russell
+          "#3671C6", // Sergio Perez
+          "#F91536", // Charles Leclerc
+          "#6CD3BF", // Lewis Hamilton
+          "#F91536", // Carlos Sainz
+        ],
+        borderColor: [
+          "#3671C6",
+          "#F58020",
+          "#F58020",
+          "#6CD3BF",
+          "#3671C6",
+          "#F91536",
+          "#6CD3BF",
+          "#F91536",
+        ],
         borderWidth: 1,
       },
     ],

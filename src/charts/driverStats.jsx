@@ -58,28 +58,32 @@ export default function DriverStats({
   return (
     <div className="flex flex-col items-center">
       {/* Reference: https://tailwindcss.com/plus/ui-blocks/application-ui/elements/dropdowns */}
-      <Menu as="div" className="relative inline-block mb-3">
-        <MenuButton className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-neutral-50 inset-ring-1 inset-ring-white/5 hover:bg-white/20">
+      <Menu as="div" className="relative inline-block mb-3 w-full">
+        <MenuButton className="inline-flex w-full justify-center gap-x-1.5 rounded-full bg-neutral-800/80 px-4 py-2.5 text-sm font-semibold text-neutral-50 shadow-sm ring-1 ring-inset ring-white/20 transition-colors duration-150 hover:bg-[#E10600] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#E10600] focus:bg-[#E10600]">
           {selectedDriver ? selectedDriver.name : "Choose a driver"}
           <ChevronDownIcon
             aria-hidden="true"
-            className="-mr-1 size-5 text-gray-400"
+            className="-mr-1 size-5 text-neutral-300"
           />
         </MenuButton>
 
-        <MenuItems
-          transition
-          className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-neutral-700  outline-1 -outline-offset-1 outline-white/10 transition data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
-        >
+        <MenuItems className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-xl bg-neutral-900/95 shadow-lg ring-1 ring-[#E10600]/40 border border-[#E10600]/40 focus:outline-none">
           <div className="py-1">
             {availableDrivers.map((d) => (
               <MenuItem key={d.driver_number}>
-                <button
-                  className="w-full block px-4 py-2 text-sm text-gray-300 data-focus:bg-white/5  data-focus:text-white data-focus:outline-hidden"
-                  onClick={() => handleSelectDriver(d)}
-                >
-                  {d.name}
-                </button>
+                {({ focus }) => (
+                  <button
+                    type="button"
+                    onClick={() => handleSelectDriver(d)}
+                    className={`w-full px-4 py-2 text-left text-sm rounded-lg transition-colors ${
+                      focus
+                        ? "bg-[#E10600] text-white"
+                        : "text-neutral-50 hover:bg-[#E10600] hover:text-white"
+                    }`}
+                  >
+                    {d.name}
+                  </button>
+                )}
               </MenuItem>
             ))}
           </div>
