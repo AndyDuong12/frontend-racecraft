@@ -75,14 +75,25 @@ export default function MainContent({ activeView }) {
     ? "Lap Time Comparison"
     : "Race Wins per Season";
 
+  // Shared card styling for F1-style panels
+  const cardBase =
+    "bg-neutral-900/80 border border-white/10 rounded-3xl shadow-[0_0_40px_rgba(0,0,0,0.6)] backdrop-blur-md";
+
   return (
     <div className="flex justify-center mt-10">
       <div className="grid grid-cols-4 gap-6 w-full px-20">
         {/* Left Chart (same size for both views) */}
         {isDrivers ? (
-          <div className="col-span-2 row-span-2 bg-neutral-600 rounded-2xl p-5 min-h-[260px]">
-            <h2 className="text-lg text-center mb-4 font-semibold leading-tight h-12 flex items-center justify-center">
-              Wins on Races per Driver
+          <div
+            className={`${cardBase} col-span-2 row-span-2 p-5 min-h-[260px]`}
+          >
+            <h2 className="mb-4 leading-tight h-12 flex flex-col items-center justify-center">
+              <span className="text-[10px] font-semibold tracking-[0.25em] text-[#E10600] uppercase mb-1">
+                Drivers • Wins
+              </span>
+              <span className="text-lg font-semibold font-play">
+                Wins on Races per Driver
+              </span>
             </h2>
             <DriverWinsChart
               sortedWins={sortedWins}
@@ -90,9 +101,16 @@ export default function MainContent({ activeView }) {
             />
           </div>
         ) : (
-          <div className="col-span-2 row-span-2 bg-neutral-600 rounded-2xl p-5 min-h-[260px]">
-            <h2 className="text-lg text-center mb-4 font-semibold leading-tight h-12 flex items-center justify-center">
-              Wins on Races per Constructors
+          <div
+            className={`${cardBase} col-span-2 row-span-2 p-5 min-h-[260px]`}
+          >
+            <h2 className="mb-4 leading-tight h-12 flex flex-col items-center justify-center">
+              <span className="text-[10px] font-semibold tracking-[0.25em] text-[#E10600] uppercase mb-1">
+                Constructors • Wins
+              </span>
+              <span className="text-lg font-semibold font-play">
+                Wins on Races per Constructors
+              </span>
             </h2>
             {/* removed placeholder text here */} {/* # */}
             <ConstructorWinsChart
@@ -106,7 +124,7 @@ export default function MainContent({ activeView }) {
         {isDrivers && (
           <div className="col-span-2 flex space-x-6">
             {/* Card 1 */}
-            <div className="flex-1 bg-neutral-600 p-6 rounded-2xl min-h-[150px]">
+            <div className={`${cardBase} flex-1 p-6 min-h-[150px]`}>
               <div className="text-sm text-center font-medium leading-tight flex items-center justify-center">
                 {isDrivers ? (
                   <DriverStats
@@ -123,7 +141,7 @@ export default function MainContent({ activeView }) {
             </div>
 
             {/* Card 2 */}
-            <div className="flex-1 bg-neutral-600 p-6 rounded-2xl min-h-[150px]">
+            <div className={`${cardBase} flex-1 p-6 min-h-[150px]`}>
               <div className="text-sm text-center font-medium leading-tight flex items-center justify-center">
                 {isDrivers ? (
                   <DriverStats
@@ -144,7 +162,7 @@ export default function MainContent({ activeView }) {
         {isDrivers ? null : ( // #
           <div className="col-span-2 flex space-x-6">
             {/* # */}
-            <div className="flex-1 bg-neutral-600 p-6 rounded-2xl min-h-[150px]">
+            <div className={`${cardBase} flex-1 p-6 min-h-[150px]`}>
               {/* # */}
               <ConstructorStats
                 constructorWins={constructorWins}
@@ -156,7 +174,7 @@ export default function MainContent({ activeView }) {
               {/* # */}
             </div>
             {/* # */}
-            <div className="flex-1 bg-neutral-600 p-6 rounded-2xl min-h-[150px]">
+            <div className={`${cardBase} flex-1 p-6 min-h-[150px]`}>
               {/* # */}
               <ConstructorStats
                 constructorWins={constructorWins}
@@ -172,15 +190,15 @@ export default function MainContent({ activeView }) {
         )}{" "}
         {/* # */}
         {/* Bottom Chart (same size; only metric label changes) */}
-        <div className="col-start-3 col-span-2 bg-neutral-600 rounded-2xl p-6 min-h-[200px]">
-          <div className="flex justify-around mb-4">
-            <h3 className="text-base">
-              <span className="font-semibold">Track: </span>Monza
-            </h3>
-            <h3 className="text-base">
-              <span className="font-semibold">Metric: </span>
+        <div className={`${cardBase} col-start-3 col-span-2 p-6 min-h-[200px]`}>
+          <div className="flex justify-between items-center mb-4 text-xs tracking-[0.2em] uppercase text-neutral-400">
+            <span>
+              <span className="text-[#E10600] mr-1">Track</span>• Monza
+            </span>
+            <span>
+              <span className="text-[#E10600] mr-1">Metric</span>•{" "}
               {bottomMetricLabel}
-            </h3>
+            </span>
           </div>
 
           {/* Chart here */}

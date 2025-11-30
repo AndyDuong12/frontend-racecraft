@@ -32,15 +32,15 @@ export default function ConstructorStats({
     <div className="flex flex-col items-center">
       {/* Simple dropdown for team selection */}
       <Menu as="div" className="relative inline-block mb-3 w-full">
-        <MenuButton className="inline-flex w-full justify-center gap-x-1.5 rounded-full bg-white/10 px-3 py-2 text-sm font-semibold text-neutral-50 shadow-sm ring-1 ring-inset ring-white/20 hover:bg-white/20">
+        <MenuButton className="inline-flex w-full justify-center gap-x-1.5 rounded-full bg-neutral-800/80 px-4 py-2.5 text-sm font-semibold text-neutral-50 shadow-sm ring-1 ring-inset ring-white/20 transition-colors duration-150 hover:bg-[#E10600] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#E10600] focus:bg-[#E10600]">
           {selectedConstructor ? selectedConstructor.teamName : "Choose a team"}
           <ChevronDownIcon
             aria-hidden="true"
-            className="-mr-1 size-5 text-gray-400"
+            className="-mr-1 size-5 text-neutral-300"
           />
         </MenuButton>
 
-        <MenuItems className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-neutral-800 shadow-lg ring-1 ring-black/5 focus:outline-none">
+        <MenuItems className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-xl bg-neutral-900/95 shadow-lg ring-1 ring-[#E10600]/40 border border-[#E10600]/40 focus:outline-none">
           <div className="py-1">
             {availableConstructors.map((team) => (
               <MenuItem key={team.teamName}>
@@ -48,8 +48,10 @@ export default function ConstructorStats({
                   <button
                     type="button"
                     onClick={() => handleSelectConstructor(team)}
-                    className={`w-full px-4 py-2 text-left text-sm ${
-                      focus ? "bg-white/10 text-white" : "text-neutral-50"
+                    className={`w-full px-4 py-2 text-left text-sm rounded-lg transition-colors ${
+                      focus
+                        ? "bg-[#E10600] text-white"
+                        : "text-neutral-50 hover:bg-[#E10600] hover:text-white"
                     }`}
                   >
                     {team.teamName}
