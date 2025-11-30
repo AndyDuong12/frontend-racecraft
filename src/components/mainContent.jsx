@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useMemo } from "react"; // #
+import { useMemo } from "react";
 
 import f1car from "../assets/formula1-car-icon.png"; // Car image on the right
 
@@ -29,45 +29,38 @@ export default function MainContent({ activeView }) {
 
   // Group driver wins by team to get constructor wins
   const constructorWins = useMemo(() => {
-    // #
     if (!sortedWins || sortedWins.length === 0 || !driverDetails) {
-      // #
-      return []; // #
-    } // #
+      return [];
+    }
 
-    const teamMap = new Map(); // #
+    const teamMap = new Map();
 
     sortedWins.forEach((driverWin) => {
-      // #
       const details = driverDetails.find(
-        // #
-        (d) => String(d?.driver_number) === String(driverWin.driver_number) // # updated
-      ); // #
+        (d) => String(d?.driver_number) === String(driverWin.driver_number) // updated
+      );
 
-      if (!details || !details.team_name) return; // #
+      if (!details || !details.team_name) return;
 
-      const teamName = details.team_name; // #
-      const teamColour = details.team_colour; // #
+      const teamName = details.team_name;
+      const teamColour = details.team_colour;
 
-      const existing = teamMap.get(teamName); // #
+      const existing = teamMap.get(teamName);
       if (existing) {
-        // #
-        existing.wins += driverWin.wins; // #
+        existing.wins += driverWin.wins;
       } else {
-        // #
         teamMap.set(teamName, {
-          // #
-          teamName, // #
-          teamColour, // #
-          wins: driverWin.wins, // #
-        }); // #
-      } // #
-    }); // #
+          teamName,
+          teamColour,
+          wins: driverWin.wins,
+        });
+      }
+    });
 
-    return Array.from(teamMap.values()).sort((a, b) => b.wins - a.wins); // #
-  }, [sortedWins, driverDetails]); // #
+    return Array.from(teamMap.values()).sort((a, b) => b.wins - a.wins);
+  }, [sortedWins, driverDetails]);
 
-  const constructorsLoading = loadingStatsAPI || loadingDetails; // # updated
+  const constructorsLoading = loadingStatsAPI || loadingDetails; // updated
 
   // Text that changes between views, layout stays identical
   const isDrivers = activeView === "drivers";
@@ -112,12 +105,11 @@ export default function MainContent({ activeView }) {
                 Wins on Races per Constructors
               </span>
             </h2>
-            {/* removed placeholder text here */} {/* # */}
+            {/* removed placeholder text here */}
             <ConstructorWinsChart
               constructorWins={constructorWins}
               loading={constructorsLoading}
-            />{" "}
-            {/* # */}
+            />
           </div>
         )}
         {/* Right 2 small stats (same layout, different labels) */}
@@ -159,11 +151,9 @@ export default function MainContent({ activeView }) {
           </div>
         )}
         {/* Extra constructor stats cards when in constructors view */}
-        {isDrivers ? null : ( // #
+        {isDrivers ? null : (
           <div className="col-span-2 flex space-x-6 z-1">
-            {/* # */}
             <div className={`${cardBase} flex-1 p-6 min-h-[150px]`}>
-              {/* # */}
               <ConstructorStats
                 constructorWins={constructorWins}
                 loading={constructorsLoading}
@@ -171,11 +161,9 @@ export default function MainContent({ activeView }) {
                 selectedConstructors={selectedConstructors}
                 setSelectedConstructors={setSelectedConstructors}
               />
-              {/* # */}
             </div>
-            {/* # */}
+
             <div className={`${cardBase} flex-1 p-6 min-h-[150px]`}>
-              {/* # */}
               <ConstructorStats
                 constructorWins={constructorWins}
                 loading={constructorsLoading}
@@ -183,12 +171,9 @@ export default function MainContent({ activeView }) {
                 selectedConstructors={selectedConstructors}
                 setSelectedConstructors={setSelectedConstructors}
               />
-              {/* # */}
             </div>
-            {/* # */}
-          </div> // #
+          </div>
         )}{" "}
-        {/* # */}
         {/* Bottom Chart (same size; only metric label changes) */}
         <div className={`${cardBase} col-start-3 col-span-2 p-6 min-h-[200px]`}>
           <div className="flex justify-between items-center mb-4 text-xs tracking-[0.2em] uppercase text-neutral-400">
