@@ -122,7 +122,7 @@ export default function MainContent({ activeView }) {
         )}
         {/* Right 2 small stats (same layout, different labels) */}
         {isDrivers && (
-          <div className="col-span-2 flex space-x-6">
+          <div className="col-span-2 flex space-x-6 z-1">
             {/* Card 1 */}
             <div className={`${cardBase} flex-1 p-6 min-h-[150px]`}>
               <div className="text-sm text-center font-medium leading-tight flex items-center justify-center">
@@ -160,7 +160,7 @@ export default function MainContent({ activeView }) {
         )}
         {/* Extra constructor stats cards when in constructors view */}
         {isDrivers ? null : ( // #
-          <div className="col-span-2 flex space-x-6">
+          <div className="col-span-2 flex space-x-6 z-1">
             {/* # */}
             <div className={`${cardBase} flex-1 p-6 min-h-[150px]`}>
               {/* # */}
