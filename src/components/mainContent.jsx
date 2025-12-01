@@ -156,30 +156,28 @@ export default function MainContent({
           </div>
         </div>
 
-        {/* Bottom Chart – race wins per season / lap-time placeholder */}
-        <div className={`${cardBase} col-start-3 col-span-2 p-6 min-h-[260px]`}>
-          <div className="flex justify-between items-center mb-4 text-xs tracking-[0.2em] uppercase text-neutral-400">
-            <span>
-              <span className="text-[#E10600] mr-1">Track</span>• Monza
-            </span>
-            <span>
-              <span className="text-[#E10600] mr-1">Metric</span>•
-              {isDrivers ? " Lap Time Comparison" : " Race Wins per Season"}
-            </span>
-          </div>
-
-          {isDrivers ? (
-            <div className="h-64 flex items-center justify-center text-neutral-500 text-sm">
-              Lap time chart coming soon…
+        {/* Bottom Chart – constructors only: race wins per season */}
+        {!isDrivers && (
+          <div
+            className={`${cardBase} col-start-3 col-span-2 p-6 min-h-[260px]`}
+          >
+            <div className="flex justify-between items-center mb-4 text-xs tracking-[0.2em] uppercase text-neutral-400">
+              <span>
+                <span className="text-[#E10600] mr-1">Track</span>• Monza
+              </span>
+              <span>
+                <span className="text-[#E10600] mr-1">Metric</span>• Race Wins
+                per Season
+              </span>
             </div>
-          ) : (
+
             <ConstructorSeasonWinsChart
               seasonWins={seasonWins}
               seasons={seasonYears}
               loading={loadingSeasonWins}
             />
-          )}
-        </div>
+          </div>
+        )}
 
         {/* Bottom Chart 2 – driver country distribution (drivers only) */}
         {isDrivers && (
