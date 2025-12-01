@@ -22,7 +22,11 @@ ChartJS.register(
 
 export default function DriverWinsChart({ sortedWins, loadingStatsAPI }) {
   if (loadingStatsAPI || !sortedWins || sortedWins.length === 0) {
-    return <div className="text-center text-3xl font-bold">Loading...</div>;
+    return (
+      <div className="flex items-center justify-center font-bold">
+        Loading...
+      </div>
+    );
   }
 
   // chart.js data formatting
@@ -53,6 +57,8 @@ export default function DriverWinsChart({ sortedWins, loadingStatsAPI }) {
           "#F91536",
         ],
         borderWidth: 1,
+        borderRadius: 6,
+        barThickness: 30,
       },
     ],
   };

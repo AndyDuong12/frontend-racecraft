@@ -7,6 +7,7 @@ import useDriverWinsAPI from "../api/drivers/driverWinsAPI.jsx"; // API call for
 import useDriverStatsAPI from "../api/drivers/driverStatsAPI.jsx"; // API call for drivers stats
 import DriverWinsChart from "../charts/driverWinsChart.jsx"; // Chart for 'Wins on Races per Driver'
 import DriverStats from "../charts/driverStats.jsx"; // Driver stats
+import DriverCountryChart from "../charts/driverCountryChart.jsx"; // Driver Country Chart
 import ConstructorWinsChart from "../charts/constructorWinsChart.jsx";
 import ConstructorStats from "../charts/constructorStats.jsx";
 
@@ -175,18 +176,24 @@ export default function MainContent({ activeView }) {
           </div>
         )}{" "}
         {/* Bottom Chart (same size; only metric label changes) */}
-        <div className={`${cardBase} col-start-3 col-span-2 p-6 min-h-[200px]`}>
-          <div className="flex justify-between items-center mb-4 text-xs tracking-[0.2em] uppercase text-neutral-400">
-            <span>
-              <span className="text-[#E10600] mr-1">Track</span>• Monza
-            </span>
-            <span>
-              <span className="text-[#E10600] mr-1">Metric</span>•{" "}
-              {bottomMetricLabel}
-            </span>
-          </div>
-
-          {/* Chart here */}
+        <div
+          className={`${cardBase} col-start-3 col-span-2 pt-6 min-h-[360px]`}
+        >
+          {isDrivers ? (
+            <>
+              <h3 className="flex justify-center items-center mb-4 ">
+                <span className="text-xs tracking-[0.2em] uppercase text-neutral-400">
+                  <span className="text-[#E10600] mr-1">Drivers</span>• Country
+                  Distribution
+                </span>
+              </h3>
+              <DriverCountryChart
+                sortedWins={sortedWins}
+                driverDetails={driverDetails}
+                loading={loadingStatsAPI || loadingDetails}
+              />
+            </>
+          ) : null}
         </div>
       </div>
 
