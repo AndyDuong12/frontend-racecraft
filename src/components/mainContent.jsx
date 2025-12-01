@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import { useMemo } from "react";
 
 import useConstructorSeasonWinsAPI from "../api/constructors/constructorSeasonWinsAPI.jsx";
 import ConstructorSeasonWinsChart from "../charts/constructorSeasonWinsChart.jsx";
@@ -22,6 +21,7 @@ export default function MainContent({
   const { sortedWins, loadingStatsAPI } = useDriverWinsAPI();
   const { driverDetails, loadingDetails } = useDriverStatsAPI(sortedWins);
 
+  // Group driver wins by team to get constructor wins
   const constructorWins = useMemo(() => {
     if (!sortedWins || sortedWins.length === 0 || !driverDetails) {
       return [];
@@ -108,8 +108,7 @@ export default function MainContent({
         )}
 
         {/* Right 2 small stats (same layout, different labels) */}
-
-        <div className="col-span-2 flex space-x-6 z-1">
+        <div className="col-span-2 flex space-x-6">
           {/* Card 1 */}
           <div className={`${cardBase} flex-1 p-6 min-h-[150px]`}>
             {isDrivers ? (
@@ -157,7 +156,7 @@ export default function MainContent({
           </div>
         </div>
 
-        {/* Bottom Chart (Lap times vs Race wins per season) */}
+        {/* Bottom Chart – race wins per season / lap-time placeholder */}
         <div className={`${cardBase} col-start-3 col-span-2 p-6 min-h-[260px]`}>
           <div className="flex justify-between items-center mb-4 text-xs tracking-[0.2em] uppercase text-neutral-400">
             <span>
@@ -180,7 +179,9 @@ export default function MainContent({
               loading={loadingSeasonWins}
             />
           )}
-        {/* Bottom Chart (same size; only metric label changes) */}
+        </div>
+
+        {/* Bottom Chart 2 – driver country distribution */}
         <div
           className={`${cardBase} col-start-3 col-span-2 pt-6 min-h-[360px]`}
         >
@@ -205,6 +206,7 @@ export default function MainContent({
                   <span className="text-[#E10600] mr-1">Constructors</span>• ???
                 </span>
               </h3>
+              {/* future constructor chart goes here */}
             </>
           )}
         </div>
