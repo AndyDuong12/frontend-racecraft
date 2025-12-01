@@ -1,6 +1,6 @@
-import f1Icon from "../assets/F1 Logo.png"; // Formula 1 Icon
-import ex1 from "../assets/Group 5.png";
-import ex2 from "../assets/Group 7.png";
+import f1Icon from "../assets/F1_Logo.png"; // Formula 1 Icon
+import driverIcon from "../assets/driverIcon.png";
+import constructorIcon from "../assets/constructorIcon.png";
 
 export default function NavBar({
   activeView,
@@ -48,8 +48,8 @@ export default function NavBar({
             }`}
           >
             <img
-              src={ex1}
-              alt="example1"
+              src={driverIcon}
+              alt="Driver Icon to switch to driver view"
               className="size-15 rounded-full object-cover"
             />
           </button>
@@ -65,8 +65,8 @@ export default function NavBar({
             }`}
           >
             <img
-              src={ex2}
-              alt="example2"
+              src={constructorIcon}
+              alt="Constructor Icon to switch to constructor view"
               className="size-15 rounded-full object-cover"
             />
           </button>
