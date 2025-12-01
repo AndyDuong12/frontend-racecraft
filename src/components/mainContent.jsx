@@ -181,35 +181,24 @@ export default function MainContent({
           )}
         </div>
 
-        {/* Bottom Chart 2 – driver country distribution */}
-        <div
-          className={`${cardBase} col-start-3 col-span-2 pt-6 min-h-[360px]`}
-        >
-          {isDrivers ? (
-            <>
-              <h3 className="flex justify-center items-center mb-4 ">
-                <span className="text-xs tracking-[0.2em] uppercase text-neutral-400">
-                  <span className="text-[#E10600] mr-1">Drivers</span>• Country
-                  Distribution
-                </span>
-              </h3>
-              <DriverCountryChart
-                sortedWins={sortedWins}
-                driverDetails={driverDetails}
-                loading={loadingStatsAPI || loadingDetails}
-              />
-            </>
-          ) : (
-            <>
-              <h3 className="flex justify-center items-center mb-4 ">
-                <span className="text-xs tracking-[0.2em] uppercase text-neutral-400">
-                  <span className="text-[#E10600] mr-1">Constructors</span>• ???
-                </span>
-              </h3>
-              {/* future constructor chart goes here */}
-            </>
-          )}
-        </div>
+        {/* Bottom Chart 2 – driver country distribution (drivers only) */}
+        {isDrivers && (
+          <div
+            className={`${cardBase} col-start-3 col-span-2 pt-6 min-h-[360px]`}
+          >
+            <h3 className="flex justify-center items-center mb-4 ">
+              <span className="text-xs tracking-[0.2em] uppercase text-neutral-400">
+                <span className="text-[#E10600] mr-1">Drivers</span>• Country
+                Distribution
+              </span>
+            </h3>
+            <DriverCountryChart
+              sortedWins={sortedWins}
+              driverDetails={driverDetails}
+              loading={loadingStatsAPI || loadingDetails}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
