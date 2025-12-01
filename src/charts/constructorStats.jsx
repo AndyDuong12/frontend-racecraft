@@ -31,8 +31,19 @@ export default function ConstructorStats({
     <div className="flex flex-col items-center">
       {/* Simple dropdown for team selection */}
       <Menu as="div" className="relative inline-block mb-3 w-full">
-        <MenuButton className="inline-flex w-full justify-center gap-x-1.5 rounded-full bg-neutral-800/80 px-4 py-2.5 text-sm font-semibold text-neutral-50 shadow-sm ring-1 ring-inset ring-white/20 transition-colors duration-150 hover:bg-[#E10600] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#E10600] focus:bg-[#E10600]">
-          {selectedConstructor ? selectedConstructor.teamName : "Choose a team"}
+        <MenuButton
+          disabled={loading}
+          className={`inline-flex w-full justify-center gap-x-1.5 rounded-full bg-neutral-800/80 px-4 py-2.5 text-sm font-semibold text-neutral-50 shadow-sm ring-1 ring-inset ring-white/20 transition-colors duration-150 ${
+            loading
+              ? "cursor-not-allowed opacity-50"
+              : "hover:bg-[#E10600] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#E10600] focus:bg-[#E10600]"
+          }`}
+        >
+          {selectedConstructor
+            ? selectedConstructor.teamName
+            : loading
+            ? "Loading"
+            : "Choose a team"}
           <ChevronDownIcon
             aria-hidden="true"
             className="-mr-1 size-5 text-neutral-300"
