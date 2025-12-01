@@ -1,4 +1,3 @@
-// src/charts/constructorWinsChart.jsx
 import { Bar } from "react-chartjs-2";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import {
@@ -43,7 +42,6 @@ export default function ConstructorWinsChart({ constructorWins, loading }) {
   const labels = constructorWins.map((team) => team.teamName);
   const wins = constructorWins.map((team) => team.wins);
 
-  // Use team color if available, otherwise fall back to default
   const backgroundColors = constructorWins.map(
     (team) => TEAM_COLORS[team.teamName] || DEFAULT_BAR_COLOR
   );

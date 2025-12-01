@@ -1,5 +1,7 @@
 import { useMemo } from "react";
 
+import useConstructorSeasonWinsAPI from "../api/constructors/constructorSeasonWinsAPI.jsx";
+import ConstructorSeasonWinsChart from "../charts/constructorSeasonWinsChart.jsx";
 import useDriverWinsAPI from "../api/drivers/driverWinsAPI.jsx"; // API call for 'Wins on Races per Driver'
 import useDriverStatsAPI from "../api/drivers/driverStatsAPI.jsx"; // API call for drivers stats
 import DriverWinsChart from "../charts/driverWinsChart.jsx"; // Chart for 'Wins on Races per Driver'
@@ -54,13 +56,14 @@ export default function MainContent({
 
   const constructorsLoading = loadingStatsAPI || loadingDetails;
 
-  // Text that changes between views, layout stays identical
-  const isDrivers = activeView === "drivers";
-  const bottomMetricLabel = isDrivers
-    ? "Lap Time Comparison"
-    : "Race Wins per Season";
+  const {
+    seasonWins,
+    loadingSeasonWins,
+    seasons: seasonYears,
+  } = useConstructorSeasonWinsAPI();
 
-  // Shared card styling for F1-style panels
+  const isDrivers = activeView === "drivers";
+
   const cardBase =
     "bg-neutral-900/80 border border-white/10 rounded-3xl shadow-[0_0_40px_rgba(0,0,0,0.6)] backdrop-blur-md";
 
@@ -105,8 +108,7 @@ export default function MainContent({
         )}
 
         {/* Right 2 small stats (same layout, different labels) */}
-
-        <div className="col-span-2 flex space-x-6 z-1">
+        <div className="col-span-2 flex space-x-6">
           {/* Card 1 */}
           <div className={`${cardBase} flex-1 p-6 min-h-[150px]`}>
             {isDrivers ? (
@@ -154,34 +156,47 @@ export default function MainContent({
           </div>
         </div>
 
-        {/* Bottom Chart (same size; only metric label changes) */}
-        <div
-          className={`${cardBase} col-start-3 col-span-2 pt-6 min-h-[360px]`}
-        >
-          {isDrivers ? (
-            <>
-              <h3 className="flex justify-center items-center mb-4 ">
-                <span className="text-xs tracking-[0.2em] uppercase text-neutral-400">
-                  <span className="text-[#E10600] mr-1">Drivers</span>• Country
-                  Distribution
-                </span>
-              </h3>
-              <DriverCountryChart
-                sortedWins={sortedWins}
-                driverDetails={driverDetails}
-                loading={loadingStatsAPI || loadingDetails}
-              />
-            </>
-          ) : (
-            <>
-              <h3 className="flex justify-center items-center mb-4 ">
-                <span className="text-xs tracking-[0.2em] uppercase text-neutral-400">
-                  <span className="text-[#E10600] mr-1">Constructors</span>• ???
-                </span>
-              </h3>
-            </>
-          )}
-        </div>
+        {/* Bottom Chart – constructors only: race wins per season */}
+        {!isDrivers && (
+          <div
+            className={`${cardBase} col-start-3 col-span-2 p-6 min-h-[260px]`}
+          >
+            <div className="flex justify-between items-center mb-4 text-xs tracking-[0.2em] uppercase text-neutral-400">
+              <span>
+                <span className="text-[#E10600] mr-1">Track</span>• Monza
+              </span>
+              <span>
+                <span className="text-[#E10600] mr-1">Metric</span>• Race Wins
+                per Season
+              </span>
+            </div>
+
+            <ConstructorSeasonWinsChart
+              seasonWins={seasonWins}
+              seasons={seasonYears}
+              loading={loadingSeasonWins}
+            />
+          </div>
+        )}
+
+        {/* Bottom Chart 2 – driver country distribution (drivers only) */}
+        {isDrivers && (
+          <div
+            className={`${cardBase} col-start-3 col-span-2 pt-6 min-h-[360px]`}
+          >
+            <h3 className="flex justify-center items-center mb-4 ">
+              <span className="text-xs tracking-[0.2em] uppercase text-neutral-400">
+                <span className="text-[#E10600] mr-1">Drivers</span>• Country
+                Distribution
+              </span>
+            </h3>
+            <DriverCountryChart
+              sortedWins={sortedWins}
+              driverDetails={driverDetails}
+              loading={loadingStatsAPI || loadingDetails}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
