@@ -20,17 +20,6 @@ export default function DriverStats({
     }));
   };
 
-  // Loading check
-  if (loadingStatsAPI || !sortedWins || sortedWins.length === 0) {
-    return (
-      <div className="text-center">
-        <div className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-neutral-50">
-          Loading...
-        </div>
-      </div>
-    );
-  }
-
   // Filter out drivers already selected in other cards
   const availableDrivers = sortedWins.filter((driver) => {
     // Keep the current selection for this card
@@ -59,8 +48,19 @@ export default function DriverStats({
     <div className="flex flex-col items-center">
       {/* Reference: https://tailwindcss.com/plus/ui-blocks/application-ui/elements/dropdowns */}
       <Menu as="div" className="relative inline-block mb-3 w-full">
-        <MenuButton className="inline-flex w-full justify-center gap-x-1.5 rounded-full bg-neutral-800/80 px-4 py-2.5 text-sm font-semibold text-neutral-50 shadow-sm ring-1 ring-inset ring-white/20 transition-colors duration-150 hover:bg-[#E10600] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#E10600] focus:bg-[#E10600]">
-          {selectedDriver ? selectedDriver.name : "Choose a driver"}
+        <MenuButton
+          disabled={loadingStatsAPI}
+          className={`inline-flex w-full justify-center gap-x-1.5 rounded-full bg-neutral-800/80 px-4 py-2.5 text-sm font-semibold text-neutral-50 shadow-sm ring-1 ring-inset ring-white/20 transition-colors duration-150 ${
+            loadingStatsAPI
+              ? "cursor-not-allowed opacity-50"
+              : "hover:bg-[#E10600] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#E10600] focus:bg-[#E10600]"
+          }`}
+        >
+          {selectedDriver
+            ? selectedDriver.name
+            : loadingStatsAPI
+            ? "Loading"
+            : "Choose a driver"}
           <ChevronDownIcon
             aria-hidden="true"
             className="-mr-1 size-5 text-neutral-300"
@@ -91,7 +91,7 @@ export default function DriverStats({
       </Menu>
 
       {/* Driver Stats */}
-      {selectedDriver && (
+      {selectedDriver && !loadingStatsAPI && (
         <div className="mt-3 flex flex-col items-center gap-4 w-full">
           {loadingDetails ? (
             <div className="text-sm">Loading driver details</div>
