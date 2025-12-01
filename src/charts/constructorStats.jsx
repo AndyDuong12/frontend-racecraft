@@ -17,7 +17,6 @@ export default function ConstructorStats({
     }));
   };
 
-  // Don’t allow the same constructor to be selected in both cards
   const availableConstructors = constructorWins.filter((team) => {
     if (selectedConstructor && team.teamName === selectedConstructor.teamName) {
       return true;

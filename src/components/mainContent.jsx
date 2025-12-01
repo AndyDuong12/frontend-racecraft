@@ -1,5 +1,7 @@
-import { useMemo } from "react"; // useState removed
+import { useMemo } from "react";
 
+import useConstructorSeasonWinsAPI from "../api/constructors/constructorSeasonWinsAPI.jsx";
+import ConstructorSeasonWinsChart from "../charts/constructorSeasonWinsChart.jsx";
 import useDriverWinsAPI from "../api/drivers/driverWinsAPI.jsx"; // API call for 'Wins on Races per Driver'
 import useDriverStatsAPI from "../api/drivers/driverStatsAPI.jsx"; // API call for drivers stats
 import DriverWinsChart from "../charts/driverWinsChart.jsx"; // Chart for 'Wins on Races per Driver'
@@ -18,7 +20,6 @@ export default function MainContent({
   const { sortedWins, loadingStatsAPI } = useDriverWinsAPI();
   const { driverDetails, loadingDetails } = useDriverStatsAPI(sortedWins);
 
-  // Group driver wins by team to get constructor wins
   const constructorWins = useMemo(() => {
     if (!sortedWins || sortedWins.length === 0 || !driverDetails) {
       return [];
@@ -53,13 +54,14 @@ export default function MainContent({
 
   const constructorsLoading = loadingStatsAPI || loadingDetails;
 
-  // Text that changes between views, layout stays identical
-  const isDrivers = activeView === "drivers";
-  const bottomMetricLabel = isDrivers
-    ? "Lap Time Comparison"
-    : "Race Wins per Season";
+  const {
+    seasonWins,
+    loadingSeasonWins,
+    seasons: seasonYears,
+  } = useConstructorSeasonWinsAPI();
 
-  // Shared card styling for F1-style panels
+  const isDrivers = activeView === "drivers";
+
   const cardBase =
     "bg-neutral-900/80 border border-white/10 rounded-3xl shadow-[0_0_40px_rgba(0,0,0,0.6)] backdrop-blur-md";
 
@@ -162,19 +164,29 @@ export default function MainContent({
           </div>
         )}
 
-        {/* Bottom Chart (same size; only metric label changes) */}
-        <div className={`${cardBase} col-start-3 col-span-2 p-6 min-h-[200px]`}>
+        {/* Bottom Chart (Lap times vs Race wins per season) */}
+        <div className={`${cardBase} col-start-3 col-span-2 p-6 min-h-[260px]`}>
           <div className="flex justify-between items-center mb-4 text-xs tracking-[0.2em] uppercase text-neutral-400">
             <span>
               <span className="text-[#E10600] mr-1">Track</span>• Monza
             </span>
             <span>
-              <span className="text-[#E10600] mr-1">Metric</span>•{" "}
-              {bottomMetricLabel}
+              <span className="text-[#E10600] mr-1">Metric</span>•
+              {isDrivers ? " Lap Time Comparison" : " Race Wins per Season"}
             </span>
           </div>
 
-          {/* Chart here */}
+          {isDrivers ? (
+            <div className="h-64 flex items-center justify-center text-neutral-500 text-sm">
+              Lap time chart coming soon…
+            </div>
+          ) : (
+            <ConstructorSeasonWinsChart
+              seasonWins={seasonWins}
+              seasons={seasonYears}
+              loading={loadingSeasonWins}
+            />
+          )}
         </div>
       </div>
       {/* car PNG removed so content stays centered */}
