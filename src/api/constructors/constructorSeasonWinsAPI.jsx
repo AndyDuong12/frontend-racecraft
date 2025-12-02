@@ -1,4 +1,3 @@
-// src/api/constructors/constructorSeasonWinsAPI.jsx
 import { useEffect, useState } from "react";
 
 const SEASONS = [2018, 2019, 2020, 2021, 2022, 2023, 2024];
@@ -10,8 +9,6 @@ export const TARGET_CONSTRUCTORS = [
   "Ferrari",
 ];
 
-// Manually seeded Monza winners by constructor
-// (only used when the API doesn't already give us a win for that year)
 const SEEDED_MONZA_WINNERS = {
   2018: "Mercedes",
   2019: "Ferrari",
@@ -107,8 +104,6 @@ export default function useConstructorSeasonWinsAPI() {
             resultsBySeason[year] = {};
           }
 
-          // If the API already gave us any wins for our target teams
-          // this year, don't add a manual one (avoids double-counting).
           const hasAnyTargetWin = Object.entries(resultsBySeason[year]).some(
             ([team, count]) =>
               TARGET_CONSTRUCTORS.includes(team) && (count || 0) > 0

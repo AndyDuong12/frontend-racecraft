@@ -1,4 +1,4 @@
-import f1Icon from "../assets/F1_Logo.png"; // Formula 1 Icon
+import f1Icon from "../assets/F1_Logo.png"; 
 import driverIcon from "../assets/driverIcon.png";
 import constructorIcon from "../assets/constructorIcon.png";
 

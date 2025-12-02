@@ -29,7 +29,6 @@ export default function DriverWinsChart({ sortedWins, loadingStatsAPI }) {
     );
   }
 
-  // chart.js data formatting
   const data = {
     labels: sortedWins.map((d) => d.name),
     datasets: [

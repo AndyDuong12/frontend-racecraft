@@ -1,6 +1,5 @@
 import { TARGET_CONSTRUCTORS } from "../api/constructors/constructorSeasonWinsAPI.jsx";
 
-// F1 team colours
 const TEAM_COLOURS = {
   "Red Bull Racing": "#3671C6",
   McLaren: "#F58020",
@@ -42,7 +41,6 @@ export default function ConstructorSeasonWinsChart({
 
   const seasonLabels = Array.isArray(seasons) ? seasons : [];
 
-  // Find the max wins value across all teams & seasons to scale colour intensity
   const maxWins =
     seasonLabels.reduce((max, year) => {
       const yearMax = TARGET_CONSTRUCTORS.reduce((innerMax, teamName) => {
@@ -63,7 +61,6 @@ export default function ConstructorSeasonWinsChart({
 
     const baseHex = TEAM_COLOURS[teamName] || DEFAULT_COLOUR;
 
-    // Scale intensity between 0.3 and 1.0 based on wins
     const intensity = 0.3 + (0.7 * wins) / maxWins;
 
     return {
