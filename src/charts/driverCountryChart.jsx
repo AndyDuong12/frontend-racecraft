@@ -68,7 +68,7 @@ export default function DriverCountryChart({
 
   const labels = sortedCountries.map(([country]) => country);
   const values = sortedCountries.map(([_, wins]) => wins);
-  const colorMap = useMemo(() => generateColors(labels), [labels]);
+  const colorMap = useMemo(() => generateColors(labels), [labels.join(",")]);
 
   const data = {
     labels,
@@ -93,7 +93,7 @@ export default function DriverCountryChart({
         display: true,
         position: "top",
         labels: {
-          colors: "white",
+          color: "white",
           font: { size: 12 },
           padding: 10,
           boxWidth: 15,
