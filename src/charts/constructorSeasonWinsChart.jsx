@@ -1,23 +1,4 @@
-import { Bar } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
 import { TARGET_CONSTRUCTORS } from "../api/constructors/constructorSeasonWinsAPI.jsx";
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
 
 // F1 team colours
 const TEAM_COLOURS = {
@@ -25,6 +6,25 @@ const TEAM_COLOURS = {
   McLaren: "#F58020",
   Mercedes: "#6CD3BF",
   Ferrari: "#F91536",
+};
+
+const DEFAULT_COLOUR = "#888888";
+
+const hexToRgba = (hex, alpha) => {
+  if (!hex || typeof hex !== "string") {
+    return `rgba(136, 136, 136, ${alpha})`;
+  }
+
+  const normalized = hex.replace("#", "");
+  if (normalized.length !== 6) {
+    return `rgba(136, 136, 136, ${alpha})`;
+  }
+
+  const r = parseInt(normalized.slice(0, 2), 16);
+  const g = parseInt(normalized.slice(2, 4), 16);
+  const b = parseInt(normalized.slice(4, 6), 16);
+
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 };
 
 export default function ConstructorSeasonWinsChart({
@@ -40,47 +40,96 @@ export default function ConstructorSeasonWinsChart({
     );
   }
 
-  const labels = seasons.map(String);
+  const seasonLabels = Array.isArray(seasons) ? seasons : [];
 
-  const datasets = TARGET_CONSTRUCTORS.map((teamName) => ({
-    label: teamName,
-    data: seasons.map((year) => seasonWins[year]?.[teamName] || 0),
-    backgroundColor: TEAM_COLOURS[teamName] || "#888888",
-    borderRadius: 999,
-    maxBarThickness: 18,
-  }));
+  // Find the max wins value across all teams & seasons to scale colour intensity
+  const maxWins =
+    seasonLabels.reduce((max, year) => {
+      const yearMax = TARGET_CONSTRUCTORS.reduce((innerMax, teamName) => {
+        const wins = seasonWins[year]?.[teamName] ?? 0;
+        return wins > innerMax ? wins : innerMax;
+      }, 0);
 
-  const data = { labels, datasets };
+      return yearMax > max ? yearMax : max;
+    }, 0) || 1;
 
-  const options = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        labels: { color: "white", boxWidth: 12 },
-      },
-      tooltip: {
-        callbacks: {
-          label: (ctx) => `${ctx.dataset.label}: ${ctx.parsed.y} wins`,
-        },
-      },
-    },
-    scales: {
-      x: {
-        ticks: { color: "rgba(255,255,255,0.8)" },
-        grid: { color: "rgba(255,255,255,0.05)" },
-      },
-      y: {
-        beginAtZero: true,
-        ticks: { color: "rgba(255,255,255,0.8)" },
-        grid: { color: "rgba(255,255,255,0.1)" },
-      },
-    },
+  const getCellStyle = (teamName, wins) => {
+    if (!wins || wins <= 0) {
+      return {
+        backgroundColor: "rgba(255, 255, 255, 0.04)",
+        borderRadius: "0.375rem",
+      };
+    }
+
+    const baseHex = TEAM_COLOURS[teamName] || DEFAULT_COLOUR;
+
+    // Scale intensity between 0.3 and 1.0 based on wins
+    const intensity = 0.3 + (0.7 * wins) / maxWins;
+
+    return {
+      backgroundColor: hexToRgba(baseHex, intensity),
+      borderRadius: "0.375rem",
+    };
   };
 
   return (
-    <div className="w-full h-64 md:h-72">
-      <Bar data={data} options={options} />
+    <div className="w-full h-64 md:h-72 text-xs text-neutral-100 flex items-center justify-center">
+      <table className="border-separate border-spacing-2">
+        <thead>
+          <tr>
+            <th
+              className="px-3 py-2 text-left font-semibold text-[0.7rem] uppercase tracking-wide text-neutral-300 whitespace-nowrap"
+              style={{ minWidth: "140px" }}
+            >
+              Constructor
+            </th>
+            {seasonLabels.map((year) => (
+              <th
+                key={year}
+                className="px-1 py-2 text-center font-semibold text-[0.7rem] uppercase tracking-wide text-neutral-300 whitespace-nowrap"
+              >
+                {year}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {TARGET_CONSTRUCTORS.map((teamName) => {
+            const baseColour = TEAM_COLOURS[teamName] || DEFAULT_COLOUR;
+
+            return (
+              <tr key={teamName}>
+                <td
+                  className="px-3 py-2 text-[0.75rem] whitespace-nowrap"
+                  style={{ minWidth: "140px" }}
+                >
+                  <span
+                    className="inline-block h-2 w-2 rounded-full mr-2 align-middle"
+                    style={{ backgroundColor: baseColour }}
+                  />
+                  <span className="align-middle">{teamName}</span>
+                </td>
+
+                {seasonLabels.map((year) => {
+                  const wins = seasonWins[year]?.[teamName] ?? 0;
+                  const style = getCellStyle(teamName, wins);
+
+                  return (
+                    <td
+                      key={`${teamName}-${year}`}
+                      className="px-1 py-2 text-center text-[0.7rem]"
+                      style={style}
+                      aria-label={`${teamName} wins in ${year}: ${wins}`}
+                    >
+                      {wins > 0 ? wins : ""}
+                    </td>
+                  );
+                })}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
 }
